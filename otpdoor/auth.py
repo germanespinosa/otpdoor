@@ -158,7 +158,8 @@ def config_get():
                            provisioning_uri=provisioning_uri,
                            auth_path=config.auth_path,
                            domain=domain_name,
-                           is_default_secret=is_default_secret)
+                           is_default_secret=is_default_secret,
+                           domains=list(config.domains.keys()))
 
 @app.route(config.config_path, methods=['POST'])
 def config_post():
@@ -174,6 +175,7 @@ def config_post():
     
     action = request.form.get("action")
     message = ""
+    test_message = ""
     if action == "new_secret":
         domain_cfg.totp_secret = pyotp.random_base32()
         config.save()
@@ -189,7 +191,6 @@ def config_post():
             secret = pyotp.random_base32()
             config.domains[new_domain] = DomainConfig(new_domain, secret)
             config.save()
-            # Redirect to the new domain's config
             return redirect(url_for('config_get', domain=new_domain))
     elif action == "update_duration":
         try:
@@ -208,9 +209,17 @@ def config_post():
         domain_cfg.theme = request.form.get("theme", "dark")
         config.save()
         message = f"Theme for {domain_name} updated to {domain_cfg.theme} mode."
+    elif action == "test_code":
+        code = request.form.get("test_code", "").strip()
+        totp = get_totp(domain_cfg)
+        if totp.verify(code):
+            test_message = "✅ Success! The TOTP code is valid."
+        else:
+            test_message = "❌ Error: Invalid TOTP code."
 
-    issuer = os.environ.get("OPTDOOR_ISSUER", "OTPdoor")
-    user = os.environ.get("OPTDOOR_USER", "admin")
+    # ... provisioning logic ...
+    issuer = os.environ.get("OTPDOOR_ISSUER", "OTPdoor")
+    user = os.environ.get("OTPDOOR_USER", "admin")
     provisioning_uri = pyotp.totp.TOTP(domain_cfg.totp_secret).provisioning_uri(
         name=f"{user} ({domain_name})", 
         issuer_name=issuer
@@ -234,7 +243,9 @@ def config_post():
                            provisioning_uri=provisioning_uri,
                            auth_path=config.auth_path,
                            message=message,
-                           domain=domain_name)
+                           test_message=test_message,
+                           domain=domain_name,
+                           domains=list(config.domains.keys()))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)

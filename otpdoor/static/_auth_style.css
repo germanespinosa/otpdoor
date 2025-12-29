@@ -162,8 +162,18 @@ p.subtitle {
     padding: 0.25rem 0.75rem;
     border-radius: 99px;
     width: fit-content;
-    margin: 0 auto 1.5rem auto;
+    margin-bottom: 1.5rem;
     box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+}
+
+.login-card .domain-tag {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.domain-tag.active {
+    background: var(--primary);
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary);
 }
 
 /* Forms */

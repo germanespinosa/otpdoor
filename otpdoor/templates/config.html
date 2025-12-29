@@ -54,6 +54,21 @@
 
         {% if domain == 'default' %}
         <div class="section">
+            <h2>Managed Domains</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Manage existing authentication domains.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                {% for d in domains %}
+                <a href="?domain={{ d }}" class="domain-tag {{ 'active' if d == domain else '' }}"
+                    style="text-decoration: none;">
+                    {{ d }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="section">
             <h2>Create New Domain</h2>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
                 Add a new authentication domain for a specific application.
@@ -67,6 +82,11 @@
                 </div>
                 <button type="submit">Create Domain</button>
             </form>
+        </div>
+        {% else %}
+        <div class="section">
+            <a href="?domain=default" style="font-size: 0.85rem; color: var(--accent); text-decoration: none;">← Back to
+                Default Domain Management</a>
         </div>
         {% endif %}
 
@@ -117,8 +137,37 @@
             {% endif %}
         </div>
 
+        <div class="section" id="test-section">
+            <h2>Test Configuration</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+                Verify your authenticator app is synced correctly with this domain.
+            </p>
+
+            {% if test_message %}
+            <div class="message {{ 'success' if 'Success' in test_message else 'error-message' }}"
+                style="margin-bottom: 1.5rem;">
+                {{ test_message }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="?domain={{ domain }}#test-section">
+                <input type="hidden" name="action" value="test_code">
+                <div style="display: flex; gap: 12px; align-items: stretch;">
+                    <div style="flex: 1.5;">
+                        <input type="text" name="test_code" placeholder="000 000" required pattern="\d{6}"
+                            title="6-digit authentication code" maxlength="6"
+                            style="text-align: center; letter-spacing: 0.2em; font-family: 'Outfit', sans-serif; font-weight: 700; height: 50px; font-size: 1.25rem; margin: 0;">
+                    </div>
+                    <div style="flex: 1;">
+                        <button type="submit" style="height: 50px; margin: 0; padding: 0;">Verify Code</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <div class="nav-links">
-            <a href="{{ auth_path }}?domain={{ domain }}">← Back to Login</a>
+            <a href="{{ auth_path }}?domain={{ domain }}" style="color: var(--text-muted); font-size: 0.8rem;">Session
+                Sign Out</a>
         </div>
     </div>
 </body>
