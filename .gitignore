@@ -1,0 +1,21 @@
+# OTPdoor Configuration
+otpdoor_config.json
+
+# Build and Distribution
+python-build/
+dist/
+build/
+*.egg-info/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local Environment
+.env
+.venv
+env/
+venv/
+*.log

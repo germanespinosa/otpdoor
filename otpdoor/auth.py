@@ -129,8 +129,8 @@ def config_get():
     domain_name = request.args.get("domain", "default")
     domain_cfg = config.get_domain(domain_name)
     
-    issuer = os.environ.get("OPTDOOR_ISSUER", "OTPdoor")
-    user = os.environ.get("OPTDOOR_USER", "admin")
+    issuer = os.environ.get("OTPDOOR_ISSUER", "OTPdoor")
+    user = os.environ.get("OTPDOOR_USER", "admin")
     # Differentiation in the account name: admin (domain)
     provisioning_uri = pyotp.totp.TOTP(domain_cfg.totp_secret).provisioning_uri(
         name=f"{user} ({domain_name})", 

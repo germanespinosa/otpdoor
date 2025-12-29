@@ -4,8 +4,8 @@ import os
 # Add the project root to sys.path
 sys.path.append(os.getcwd())
 
-from optdoor.config import config
-from optdoor.auth import encrypt_session, decrypt_session
+from otpdoor.config import config
+from otpdoor.auth import encrypt_session, decrypt_session
 from datetime import datetime, timedelta, timezone
 
 # 1. Test encryption and decryption

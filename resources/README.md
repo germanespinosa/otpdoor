@@ -1,4 +1,4 @@
-# OTPdoor
+# <img src="../logo.png" width="48" height="48" valign="middle"> OTPdoor
 
 **OTPdoor** is a premium, lightweight Python library for creating and managing TOTP (One-Time Password) authentication, specifically designed to be used as an `auth_request` backend for Nginx.
 
@@ -35,7 +35,7 @@ pip install otpdoor
 
 ### 2. Launch
 ```shell
-export OPTDOOR_COOKIE_SECRET="your-secure-key"
+export OTPDOOR_COOKIE_SECRET="your-secure-key"
 python -m otpdoor -c
 ```
 
@@ -55,7 +55,7 @@ python -m otpdoor -c
 
 ## Multi-Domain Support
 
-OTPdoor allows you to manage multiple independent authentication domains. Each domain has its own secret, session duration, and theme. Configurations are encrypted and persisted in `optdoor_config.json`.
+OTPdoor allows you to manage multiple independent authentication domains. Each domain has its own secret, session duration, and theme. Configurations are encrypted and persisted in `otpdoor_config.json`.
 
 ### Managing Domains
 - **Add a domain**: `python -m otpdoor --add-domain myapp`
@@ -113,13 +113,13 @@ server {
 
 ## Configuration Reference
 
-- `OPTDOOR_TOTP_SECRET`: Shared secret for the `default` domain.
-- `OPTDOOR_COOKIE_SECRET`: Key used to encrypt session cookies.
-- `OPTDOOR_CONFIG_FILE`: Path to the JSON configuration file (default: `optdoor_config.json`).
-- `OPTDOOR_SESSION_DURATION`: Default session duration in seconds.
-- `OPTDOOR_THEME`: Default theme (`dark` or `light`).
-- `OPTDOOR_ALLOWED_DOMAINS`: Allowed domains for redirects.
-- `OPTDOOR_COOKIE_SECURE`: Set to `false` for local HTTP testing.
+- `OTPDOOR_TOTP_SECRET`: Shared secret for the `default` domain.
+- `OTPDOOR_COOKIE_SECRET`: Key used to encrypt session cookies.
+- `OTPDOOR_CONFIG_FILE`: Path to the JSON configuration file (default: `otpdoor_config.json`).
+- `OTPDOOR_SESSION_DURATION`: Default session duration in seconds.
+- `OTPDOOR_THEME`: Default theme (`dark` or `light`).
+- `OTPDOOR_ALLOWED_DOMAINS`: Allowed domains for redirects.
+- `OTPDOOR_COOKIE_SECURE`: Set to `false` for local HTTP testing.
 
 ## License
 MIT License - see the LICENSE file for details.

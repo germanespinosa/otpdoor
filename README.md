@@ -1,4 +1,4 @@
-# 🚪 OTPdoor
+# <img src="logo.png" width="48" height="48" valign="middle"> OTPdoor
 
 [![PyPI version](https://img.shields.io/pypi/v/otpdoor.svg)](https://pypi.org/project/otpdoor/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -28,7 +28,7 @@ pip install otpdoor
 ### 2. Launch
 Provide a secret key for cookie encryption and start in configuration mode:
 ```shell
-export OPTDOOR_COOKIE_SECRET="your-secure-key"
+export OTPDOOR_COOKIE_SECRET="your-secure-key"
 python -m otpdoor -c
 ```
 
@@ -75,10 +75,10 @@ location @error401 {
 
 | Variable | Description | Default |
 | :--- | :--- | :--- |
-| `OPTDOOR_COOKIE_SECRET` | Key for session & config encryption. | `super-secret-key` |
-| `OPTDOOR_CONFIG_FILE` | Path to encrypted domain storage. | `optdoor_config.json` |
-| `OPTDOOR_TOTP_SECRET` | Initial fallback secret (use `BASE32SECRET3232`). | `BASE32SECRET3232` |
-| `OPTDOOR_THEME` | Default UI theme (`dark` or `light`). | `dark` |
+| `OTPDOOR_COOKIE_SECRET` | Key for session & config encryption. | `super-secret-key` |
+| `OTPDOOR_CONFIG_FILE` | Path to encrypted domain storage. | `otpdoor_config.json` |
+| `OTPDOOR_TOTP_SECRET` | Initial fallback secret (use `BASE32SECRET3232`). | `BASE32SECRET3232` |
+| `OTPDOOR_THEME` | Default UI theme (`dark` or `light`). | `dark` |
 
 ---
 

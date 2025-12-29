@@ -43,34 +43,34 @@ class DomainConfig:
 
 class Config:
     def __init__(self):
-        self.config_path_file = os.environ.get("OPTDOOR_CONFIG_FILE", "optdoor_config.json")
+        self.config_path_file = os.environ.get("OTPDOOR_CONFIG_FILE", "otpdoor_config.json")
         self.cookie_encryption_key = Fernet.generate_key()
         self.fernet = Fernet(self.cookie_encryption_key)
         
         # Load core settings from env
-        self.cookie_secret = os.environ.get("OPTDOOR_COOKIE_SECRET", "super-secret-key-change-me")
+        self.cookie_secret = os.environ.get("OTPDOOR_COOKIE_SECRET", "super-secret-key-change-me")
         self.config_fernet = self._get_config_fernet()
         
-        self.cookie_name_prefix = os.environ.get("OPTDOOR_COOKIE_NAME", "OPTDOOR_AUTH")
-        self.auth_path = os.environ.get("OPTDOOR_AUTH_PATH", "/_auth")
-        self.check_path = os.environ.get("OPTDOOR_CHECK_PATH", "/_check")
-        self.config_path = os.environ.get("OPTDOOR_CONFIG_PATH", "/_config")
+        self.cookie_name_prefix = os.environ.get("OTPDOOR_COOKIE_NAME", "OTPDOOR_AUTH")
+        self.auth_path = os.environ.get("OTPDOOR_AUTH_PATH", "/_auth")
+        self.check_path = os.environ.get("OTPDOOR_CHECK_PATH", "/_check")
+        self.config_path = os.environ.get("OTPDOOR_CONFIG_PATH", "/_config")
         self.enable_config = False
         
-        self.allowed_domains = os.environ.get("OPTDOOR_ALLOWED_DOMAINS", "").split(",")
-        self.cookie_domain = os.environ.get("OPTDOOR_COOKIE_DOMAIN", None)
-        self.cookie_secure = os.environ.get("OPTDOOR_COOKIE_SECURE", "true").lower() == "true"
-        self.cookie_httponly = os.environ.get("OPTDOOR_COOKIE_HTTPONLY", "true").lower() == "true"
-        self.cookie_samesite = os.environ.get("OPTDOOR_COOKIE_SAMESITE", "Lax")
+        self.allowed_domains = os.environ.get("OTPDOOR_ALLOWED_DOMAINS", "").split(",")
+        self.cookie_domain = os.environ.get("OTPDOOR_COOKIE_DOMAIN", None)
+        self.cookie_secure = os.environ.get("OTPDOOR_COOKIE_SECURE", "true").lower() == "true"
+        self.cookie_httponly = os.environ.get("OTPDOOR_COOKIE_HTTPONLY", "true").lower() == "true"
+        self.cookie_samesite = os.environ.get("OTPDOOR_COOKIE_SAMESITE", "Lax")
 
         self.domains = {}
         self.load()
 
         # Ensure default domain exists
         if "default" not in self.domains:
-            default_secret = os.environ.get("OPTDOOR_TOTP_SECRET", DEFAULT_TOTP_SECRET)
-            default_duration = int(os.environ.get("OPTDOOR_SESSION_DURATION", 86400))
-            default_theme = os.environ.get("OPTDOOR_THEME", "dark")
+            default_secret = os.environ.get("OTPDOOR_TOTP_SECRET", DEFAULT_TOTP_SECRET)
+            default_duration = int(os.environ.get("OTPDOOR_SESSION_DURATION", 86400))
+            default_theme = os.environ.get("OTPDOOR_THEME", "dark")
             self.domains["default"] = DomainConfig("default", default_secret, default_duration, default_theme)
             self.save()
 
