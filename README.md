@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/germanespinosa/otpdoor/main/logo.png" width="48" height="48" valign="middle"> OTPdoor
+# <img src="https://github.com/germanespinosa/otpdoor/blob/main/logo.png?raw=true" width="48" height="48" valign="middle"> OTPdoor
 
 [![PyPI version](https://img.shields.io/pypi/v/otpdoor.svg)](https://pypi.org/project/otpdoor/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
