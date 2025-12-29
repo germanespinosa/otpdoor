@@ -1,4 +1,4 @@
-# <img src="../logo.png" width="48" height="48" valign="middle"> OTPdoor
+# <img src="https://raw.githubusercontent.com/germanespinosa/otpdoor/main/logo.png" width="48" height="48" valign="middle"> OTPdoor
 
 **OTPdoor** is a premium, lightweight Python library for creating and managing TOTP (One-Time Password) authentication, specifically designed to be used as an `auth_request` backend for Nginx.
 
