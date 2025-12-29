@@ -4,7 +4,7 @@ import os
 from flask import Flask, request, make_response, redirect, render_template, url_for, send_from_directory
 from urllib.parse import urlparse
 from datetime import datetime, timedelta, timezone
-from .config import config
+from .config import config, DEFAULT_TOTP_SECRET
 
 app = Flask(__name__)
 # Flask's secret key is for sessions/signing, but we use config.fernet for the auth cookie
@@ -13,6 +13,14 @@ app.secret_key = config.cookie_secret
 @app.route('/_auth_style.css')
 def serve_css():
     return send_from_directory(os.path.join(app.root_path, 'static'), '_auth_style.css')
+
+def is_authenticated(domain_name):
+    cookie_name = get_cookie_name(domain_name)
+    token = request.cookies.get(cookie_name)
+    if not token:
+        return False
+    expires_at = decrypt_session(token)
+    return expires_at and expires_at > datetime.now(timezone.utc)
 
 def is_safe_origin(origin):
     if not origin:
@@ -113,6 +121,11 @@ def auth_post():
 def config_get():
     if not config.enable_config:
         return "Not Found", 404
+    
+    # REQUIRE authentication for the 'default' domain to access ANY config
+    if not is_authenticated("default"):
+        return redirect(url_for('auth_get', domain='default', originator=request.full_path))
+
     domain_name = request.args.get("domain", "default")
     domain_cfg = config.get_domain(domain_name)
     
@@ -134,6 +147,9 @@ def config_get():
         display_duration //= 60
         unit = "minutes"
 
+    default_cfg = config.get_domain("default")
+    is_default_secret = default_cfg.totp_secret == DEFAULT_TOTP_SECRET
+
     return render_template("config.html", 
                            secret=domain_cfg.totp_secret, 
                            display_duration=display_duration,
@@ -141,12 +157,18 @@ def config_get():
                            theme=domain_cfg.theme,
                            provisioning_uri=provisioning_uri,
                            auth_path=config.auth_path,
-                           domain=domain_name)
+                           domain=domain_name,
+                           is_default_secret=is_default_secret)
 
 @app.route(config.config_path, methods=['POST'])
 def config_post():
     if not config.enable_config:
         return "Not Found", 404
+
+    # REQUIRE authentication for the 'default' domain
+    if not is_authenticated("default"):
+        return redirect(url_for('auth_get', domain='default', originator=request.full_path))
+
     domain_name = request.args.get("domain", "default")
     domain_cfg = config.get_domain(domain_name)
     
@@ -156,6 +178,19 @@ def config_post():
         domain_cfg.totp_secret = pyotp.random_base32()
         config.save()
         message = f"New TOTP secret generated for {domain_name}!"
+    elif action == "add_domain":
+        new_domain = request.form.get("new_domain", "").strip()
+        if not new_domain:
+            message = "Error: Domain name cannot be empty."
+        elif new_domain in config.domains:
+            message = f"Error: Domain '{new_domain}' already exists."
+        else:
+            from .config import DomainConfig
+            secret = pyotp.random_base32()
+            config.domains[new_domain] = DomainConfig(new_domain, secret)
+            config.save()
+            # Redirect to the new domain's config
+            return redirect(url_for('config_get', domain=new_domain))
     elif action == "update_duration":
         try:
             val = int(request.form.get("duration", 86400))

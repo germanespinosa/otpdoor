@@ -28,31 +28,31 @@ pip install otpdoor
 
 ## Quick Start
 
-### 1. Initialize your secret
-Run the built-in initialization to generate your first TOTP secret:
-
+### 1. Installation
 ```shell
-python -m otpdoor --init
+pip install otpdoor
 ```
 
-### 2. Set Environment Variables
-Configure the essential settings:
-
+### 2. Launch
 ```shell
-export OPTDOOR_TOTP_SECRET="YOUR_GENERATE_SECRET"
-export OPTDOOR_COOKIE_SECRET="YOUR_FERNET_KEY"
+export OPTDOOR_COOKIE_SECRET="your-secure-key"
+python -m otpdoor -c
 ```
 
-### 3. Run the Server
-Start the server on a specific host and port:
+### 3. Setup via Browser
+1.  Navigate to `http://localhost:8080/_config`.
+2.  Log in using the default secret: **`BASE32SECRET3232`**
+    *   *Scan this QR for quick access:*  
+        ![Default QR](https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=otpauth%3A%2F%2Ftotp%2FOTPdoor%3Aadmin%3Fsecret%3DBASE32SECRET3232%26issuer%3DOTPdoor)
+3.  **Immediately generate a new secret** for the `default` domain.
+4.  Use the **"Create New Domain"** section to add other applications.
 
-```shell
-python -m otpdoor -a 127.0.0.1 -p 8080
-```
+> [!IMPORTANT]
+> Access to the configuration portal now requires a valid authentication session for the `default` domain.
 
 ## Multi-Domain Support
 
-OTPdoor allows you to manage multiple authentication domains. Each domain has its own secret, session duration, and theme. Configurations are persisted in `optdoor_config.json`.
+OTPdoor allows you to manage multiple independent authentication domains. Each domain has its own secret, session duration, and theme. Configurations are encrypted and persisted in `optdoor_config.json`.
 
 ### Managing Domains
 - **Add a domain**: `python -m otpdoor --add-domain myapp`
@@ -66,31 +66,7 @@ Access routes for a specific domain by adding the `domain` parameter:
 
 If no domain is provided, it defaults to `default`.
 
-## Step-by-Step Tutorial: First Setup
 
-### 1. Installation
-```shell
-pip install otpdoor
-```
-
-### 2. Initial Setup
-```shell
-python -m otpdoor --init
-```
-
-### 3. Environment Configuration
-```shell
-export OPTDOOR_TOTP_SECRET="YOUR_GENERATED_SECRET"
-export OPTDOOR_COOKIE_SECRET="something-very-random-and-long"
-```
-
-### 4. Provisioning your Device
-```shell
-python -m otpdoor -c
-```
-- Open `http://127.0.0.1:8080/_config?domain=default`.
-- Scan the QR code.
-- Stop the server (`Ctrl+C`).
 
 ### 5. Nginx Configuration (Multi-Domain)
 To protect a specific app (`myapp`), pass the `domain` parameter in the proxy requests:
