@@ -41,10 +41,13 @@ python -m otpdoor -c
 
 ### 3. Setup via Browser
 1.  Navigate to `http://localhost:8080/_config`.
-2.  Log in using the default secret: **`BASE32SECRET3232`**
-    *   *Scan this QR for quick access:*  
-        ![Default QR](https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=otpauth%3A%2F%2Ftotp%2FOTPdoor%3Aadmin%3Fsecret%3DBASE32SECRET3232%26issuer%3DOTPdoor)
-3.  **Immediately generate a new secret** for the `default` domain.
+
+> [!CAUTION]
+> **SECURITY REQUIREMENT**: Log in with the default secret **`BASE32SECRET3232`** and **Immediately generate a new secret** for the `default` domain. Never leave the default secret active after initial setup.
+
+*   *Scan this QR for quick access:*  
+    ![Default QR](https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=otpauth%3A%2F%2Ftotp%2FOTPdoor%3Aadmin%3Fsecret%3DBASE32SECRET3232%26issuer%3DOTPdoor)
+
 4.  Use the **"Create New Domain"** section to add other applications.
 
 > [!IMPORTANT]
