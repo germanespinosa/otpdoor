@@ -1,0 +1,22 @@
+{
+    "major": 0,
+    "minor": 0,
+    "build": 11,
+    "source_folder": "otpdoor",
+    "module_name": "otpdoor",
+    "package_name": "otpdoor",
+    "author": "German Espinosa",
+    "author_email": "germanespinosa@gmail.com",
+    "description": "OTPdoor is a Python library for creating and managing OTP (One-Time Password) authentication with nginx.",
+    "install_requires": [
+        "pyotp",
+        "requests",
+        "flask",
+        "cryptography",
+        "waitress"
+    ],
+    "license_type": "MIT",
+    "url": "https://github.com/germanespinosa/otpdoor",
+    "license_file": "../resources/license.txt",
+    "readme_file": "../resources/README.md"
+}
