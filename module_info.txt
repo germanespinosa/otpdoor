@@ -1,7 +1,7 @@
 {
     "major": 0,
     "minor": 0,
-    "build": 18,
+    "build": 19,
     "source_folder": "otpdoor",
     "module_name": "otpdoor",
     "package_name": "otpdoor",

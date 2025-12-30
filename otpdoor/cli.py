@@ -12,6 +12,9 @@ def serve():
     parser.add_argument("--add-domain", help="Create a new authentication domain.")
     parser.add_argument("--remove-domain", help="Remove an existing authentication domain.")
     parser.add_argument("--list-domains", action="store_true", help="List all configured domains.")
+    parser.add_argument("--show-config", action="store_true", help="Show the absolute path to the configuration file.")
+    parser.add_argument("--export", help="Export the current configuration (unencrypted) to a file.")
+    parser.add_argument("--import", dest="import_path", help="Import a configuration file (raw/unencrypted).")
     parser.add_argument("--debug", action="store_true", help="Run in debug mode.")
     args = parser.parse_args()
 
@@ -19,6 +22,27 @@ def serve():
         print("--- Configured Domains ---")
         for name in config.domains:
             print(f"- {name}")
+        return
+
+    if args.show_config:
+        abs_path = os.path.abspath(config.config_path_file)
+        print(f"\n[CONFIG PATH] {abs_path}")
+        print("[!] Back up this file to preserve your domains and secrets during updates.\n")
+        return
+
+    if args.export:
+        if config.export_config(args.export):
+            print(f"Successfully exported configuration (unencrypted) to: {args.export}")
+        else:
+            print(f"Error: Failed to export configuration to {args.export}")
+        return
+
+    if args.import_path:
+        if config.import_config(args.import_path):
+            print(f"Successfully imported configuration from: {args.import_path}")
+            print("[!] The configuration has been merged and saved to your active storage.")
+        else:
+            print(f"Error: Failed to import configuration from {args.import_path}")
         return
 
     if args.add_domain:

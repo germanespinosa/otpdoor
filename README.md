@@ -83,6 +83,21 @@ location @error401 {
 
 ---
 
+## Backup & Recovery 💾
+
+Your configuration (domains, secrets, and settings) is stored in a JSON file. OTPdoor searches for this file in the following order:
+1.  **`OTPDOOR_CONFIG_FILE`** (Environmental variable).
+2.  **`./otpdoor_config.json`** (Current working directory).
+3.  **`~/.otpdoor/config.json`** (**Global fallback** - Persistent across versions).
+
+To manage your configuration:
+- **Locate**: Use `python -m otpdoor --show-config` to find the active configuration path.
+- **Export**: Use `python -m otpdoor --export backup.json` to create a portable, unencrypted backup.
+- **Import**: Use `python -m otpdoor --import backup.json` to merge existing settings into your active storage.
+- **Persistence**: Using the global fallback ensures your settings survive even if you delete or move the `otpdoor` project folder.
+
+---
+
 ## 📄 License
 Released under the **MIT License**.
 

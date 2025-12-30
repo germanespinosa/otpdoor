@@ -45,7 +45,18 @@ class DomainConfig:
 
 class Config:
     def __init__(self):
-        self.config_path_file = os.environ.get("OTPDOOR_CONFIG_FILE", "otpdoor_config.json")
+        # Resolve config path: 1. Env Var, 2. Local File, 3. Global Fallback
+        env_path = os.environ.get("OTPDOOR_CONFIG_FILE")
+        local_path = "otpdoor_config.json"
+        global_path = os.path.expanduser("~/.otpdoor/config.json")
+        
+        if env_path:
+            self.config_path_file = env_path
+        elif os.path.exists(local_path):
+            self.config_path_file = local_path
+        else:
+            self.config_path_file = global_path
+            
         self.cookie_encryption_key = Fernet.generate_key()
         self.fernet = Fernet(self.cookie_encryption_key)
         
@@ -118,12 +129,41 @@ class Config:
 
     def save(self):
         try:
+            # Ensure global directory exists if path is in home dir
+            dir_path = os.path.dirname(self.config_path_file)
+            if dir_path and not os.path.exists(dir_path):
+                os.makedirs(dir_path, exist_ok=True)
+                
             data = {name: d.to_dict(self.config_fernet) for name, d in self.domains.items()}
             with open(self.config_path_file, 'w') as f:
                 json.dump(data, f, indent=4)
             self._last_mtime = os.path.getmtime(self.config_path_file)
         except Exception as e:
             print(f"Error saving config: {e}")
+
+    def export_config(self, path):
+        try:
+            # Export raw data (unencrypted secrets) for portability
+            data = {name: d.to_dict() for name, d in self.domains.items()}
+            with open(path, 'w') as f:
+                json.dump(data, f, indent=4)
+            return True
+        except Exception as e:
+            print(f"Export error: {e}")
+            return False
+
+    def import_config(self, path):
+        try:
+            with open(path, 'r') as f:
+                data = json.load(f)
+                for name, d_data in data.items():
+                    # Import raw data (treating as unencrypted)
+                    self.domains[name] = DomainConfig.from_dict(name, d_data, fernet=None)
+            self.save()
+            return True
+        except Exception as e:
+            print(f"Import error: {e}")
+            return False
 
     def start_watcher(self):
         def _watcher_loop():

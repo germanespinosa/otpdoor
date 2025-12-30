@@ -121,6 +121,16 @@ server {
 - `OTPDOOR_ALLOWED_DOMAINS`: Allowed domains for redirects.
 - `OTPDOOR_COOKIE_SECURE`: Set to `true` to enable HTTPS-only cookies (default: `false`).
 
+## Persistence & Updates 🔄
+
+OTPdoor is designed to keep your data safe during version upgrades. The `otpdoor_config.json` file resides in your working directory, entirely separate from the package code. 
+
+**Steps for a safe update:**
+1. Run `python -m otpdoor --show-config` and note the path.
+2. Back up that file.
+3. Install the new version (`pip install --upgrade otpdoor` or similar).
+4. Restart the server. Your configuration will be automatically detected and reloaded.
+
 ## License
 MIT License - see the LICENSE file for details.
 
