@@ -61,7 +61,7 @@ class Config:
         
         self.allowed_domains = os.environ.get("OTPDOOR_ALLOWED_DOMAINS", "").split(",")
         self.cookie_domain = os.environ.get("OTPDOOR_COOKIE_DOMAIN", None)
-        self.cookie_secure = os.environ.get("OTPDOOR_COOKIE_SECURE", "true").lower() == "true"
+        self.cookie_secure = os.environ.get("OTPDOOR_COOKIE_SECURE", "false").lower() == "true"
         self.cookie_httponly = os.environ.get("OTPDOOR_COOKIE_HTTPONLY", "true").lower() == "true"
         self.cookie_samesite = os.environ.get("OTPDOOR_COOKIE_SAMESITE", "Lax")
 

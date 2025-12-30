@@ -119,7 +119,7 @@ server {
 - `OTPDOOR_SESSION_DURATION`: Default session duration in seconds.
 - `OTPDOOR_THEME`: Default theme (`dark` or `light`).
 - `OTPDOOR_ALLOWED_DOMAINS`: Allowed domains for redirects.
-- `OTPDOOR_COOKIE_SECURE`: Set to `false` for local HTTP testing.
+- `OTPDOOR_COOKIE_SECURE`: Set to `true` to enable HTTPS-only cookies (default: `false`).
 
 ## License
 MIT License - see the LICENSE file for details.

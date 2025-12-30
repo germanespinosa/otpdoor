@@ -79,6 +79,7 @@ location @error401 {
 | `OTPDOOR_CONFIG_FILE` | Path to encrypted domain storage. | `otpdoor_config.json` |
 | `OTPDOOR_TOTP_SECRET` | Initial fallback secret (use `BASE32SECRET3232`). | `BASE32SECRET3232` |
 | `OTPDOOR_THEME` | Default UI theme (`dark` or `light`). | `dark` |
+| `OTPDOOR_COOKIE_SECURE` | Set to `true` for HTTPS-only cookies. | `false` |
 
 ---
 
