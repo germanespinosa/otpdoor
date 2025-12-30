@@ -5,6 +5,9 @@ from flask import Flask, request, make_response, redirect, render_template, url_
 from urllib.parse import urlparse
 from datetime import datetime, timedelta, timezone
 from .config import config, DEFAULT_TOTP_SECRET
+import qrcode
+import io
+import base64
 
 app = Flask(__name__)
 # Flask's secret key is for sessions/signing, but we use config.fernet for the auth cookie
@@ -117,6 +120,20 @@ def auth_post():
                            theme=domain_cfg.theme,
                            domain=domain_name), 403
 
+def generate_qr_base64(data):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(data)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return base64.b64encode(buf.getvalue()).decode("utf-8")
+
 @app.route(config.config_path, methods=['GET'])
 def config_get():
     if not config.enable_config:
@@ -137,6 +154,8 @@ def config_get():
         issuer_name=issuer
     )
     
+    qr_code_b64 = generate_qr_base64(provisioning_uri)
+    
     # Calculate display duration and unit
     display_duration = domain_cfg.session_duration
     unit = "seconds"
@@ -156,6 +175,7 @@ def config_get():
                            unit=unit,
                            theme=domain_cfg.theme,
                            provisioning_uri=provisioning_uri,
+                           qr_code_b64=qr_code_b64,
                            auth_path=config.auth_path,
                            domain=domain_name,
                            is_default_secret=is_default_secret,
@@ -226,6 +246,7 @@ def config_post():
     )
 
     # Calculate display duration and unit for the refresh
+    # Calculate display duration and unit for the refresh
     display_duration = domain_cfg.session_duration
     unit = "seconds"
     if display_duration % 3600 == 0:
@@ -234,6 +255,8 @@ def config_post():
     elif display_duration % 60 == 0:
         display_duration //= 60
         unit = "minutes"
+        
+    qr_code_b64 = generate_qr_base64(provisioning_uri)
 
     return render_template("config.html", 
                            secret=domain_cfg.totp_secret, 
@@ -241,6 +264,7 @@ def config_post():
                            unit=unit,
                            theme=domain_cfg.theme,
                            provisioning_uri=provisioning_uri,
+                           qr_code_b64=qr_code_b64,
                            auth_path=config.auth_path,
                            message=message,
                            test_message=test_message,

@@ -127,12 +127,13 @@
             </form>
 
             {% if provisioning_uri %}
-            <div class="qr-section">
-                <p style="margin-bottom: 1rem; font-size: 0.9rem;">Scan this QR code with your authenticator:</p>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ provisioning_uri | urlencode }}"
-                    alt="QR Code">
-                <p style="font-size: 0.8rem; color: var(--text-muted);">Warning: This will invalidate old devices for {{
-                    domain }}.</p>
+            <div class="qr-section" style="text-align: center; margin-top: 1.5rem;">
+                <p style="margin-bottom: 1rem; font-size: 0.95rem;">Scan this QR code with your authenticator:</p>
+                <img src="data:image/png;base64,{{ qr_code_b64 }}" alt="TOTP QR Code"
+                    style="display: inline-block; width: 260px; height: auto; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 15px;">
+                    Warning: This will invalidate old devices for <strong>{{ domain }}</strong>.
+                </p>
             </div>
             {% endif %}
         </div>

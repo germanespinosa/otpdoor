@@ -1,7 +1,7 @@
 {
     "major": 0,
     "minor": 0,
-    "build": 22,
+    "build": 23,
     "source_folder": "otpdoor",
     "module_name": "otpdoor",
     "package_name": "otpdoor",
@@ -13,7 +13,8 @@
         "requests",
         "flask",
         "cryptography",
-        "waitress"
+        "waitress",
+        "qrcode"
     ],
     "license_type": "MIT",
     "url": "https://github.com/germanespinosa/otpdoor",
