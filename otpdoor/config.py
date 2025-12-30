@@ -110,9 +110,9 @@ class Config:
                     self.domains.clear()
                     for name, d_data in data.items():
                         self.domains[name] = DomainConfig.from_dict(name, d_data, self.config_fernet)
-                print(f"[LOAD] Successfully loaded {len(self.domains)} domains from {self.config_path_file}")
+                print(f"[LOAD] Successfully loaded {len(self.domains)} domains from {os.path.abspath(self.config_path_file)}")
             except Exception as e:
-                print(f"[LOAD ERROR] Failed to read {self.config_path_file}: {e}")
+                print(f"[LOAD ERROR] Failed to read {os.path.abspath(self.config_path_file)}: {e}")
         
         # Always ensure 'default' exists even if file is missing or domain was removed
         if "default" not in self.domains:
